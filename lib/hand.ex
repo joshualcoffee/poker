@@ -15,6 +15,9 @@ defmodule Poker.Hand do
     two_pair = length(pairs) == 2
 
     cond do
+      three_of_a_kind?(hand) ->
+        :three_of_a_kind
+
       two_pair ->
         :two_pair
 
@@ -42,5 +45,11 @@ defmodule Poker.Hand do
     hand.values
     |> Map.values()
     |> Enum.filter(fn val -> length(val) == 2 end)
+  end
+
+  @spec three_of_a_kind?(__MODULE__.t()) :: boolean()
+  defp three_of_a_kind?(hand) do
+    values = hand.values |> Map.values() |> Enum.sort(&(length(&1) <= length(&2)))
+    length(values |> List.last()) == 3
   end
 end

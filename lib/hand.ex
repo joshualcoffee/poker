@@ -15,6 +15,9 @@ defmodule Poker.Hand do
     two_pair = length(pairs) == 2
 
     cond do
+      full_house?(hand) ->
+        :full_house
+
       flush?(hand) ->
         :flush
 
@@ -55,9 +58,15 @@ defmodule Poker.Hand do
     |> Enum.filter(fn val -> length(val) == 2 end)
   end
 
+  @spec full_house?(__MODULE__.t()) :: boolean()
+  defp full_house?(hand) do
+    values = hand.values |> sort_values
+    length(values |> List.first()) == 2 && length(values |> List.last()) == 3
+  end
+
   @spec three_of_a_kind?(__MODULE__.t()) :: boolean()
   defp three_of_a_kind?(hand) do
-    values = hand.values |> Map.values() |> Enum.sort(&(length(&1) <= length(&2)))
+    values = hand.values |> sort_values
     length(values |> List.last()) == 3
   end
 
@@ -74,4 +83,7 @@ defmodule Poker.Hand do
     suit = List.first(suits)
     length(suits) == 1 && length(suit) == 5
   end
+
+  @spec sort_values(List.t()) :: List.t()
+  defp sort_values(values), do: values |> Map.values() |> Enum.sort(&(length(&1) <= length(&2)))
 end

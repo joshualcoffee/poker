@@ -1,12 +1,13 @@
 defmodule Poker.Hand do
   alias Poker.Card
-  defstruct cards: [], suits: %{}, values: %{}, rank: 0, hand: nil
+  defstruct cards: [], suits: %{}, values: %{}, rank: 0, hand: nil, hand_value: 0
 
   @type t :: %__MODULE__{
           cards: List.t(Card.t()),
           values: map(),
           suits: map(),
           rank: Integer.t(),
+          hand_value: Integer.t(),
           hand: String.t() | nil
         }
   @spec play(String.t()) :: atom()
@@ -18,40 +19,40 @@ defmodule Poker.Hand do
     flush = flush?(hand)
     straight = straight?(hand)
 
-    {rank, type} =
+    {rank, type, hand_value} =
       cond do
         royal_flush?(straight && flush, hand) ->
-          {10, :royal_flush}
+          {10, :royal_flush, hand_value(hand.cards)}
 
         straight && flush ->
-          {9, :straight_flush}
+          {9, :straight_flush, hand_value(hand.cards)}
 
         four_of_a_kind?(hand) ->
-          {8, :four_of_a_kind}
+          {8, :four_of_a_kind, hand_value(hand.cards)}
 
         full_house?(hand) ->
-          {7, :full_house}
+          {7, :full_house, hand_value(hand.cards)}
 
         flush ->
-          {6, :flush}
+          {6, :flush, hand_value(hand.cards)}
 
         straight ->
-          {5, :straight}
+          {5, :straight, hand_value(hand.cards)}
 
         three_of_a_kind?(hand) ->
-          {4, :three_of_a_kind}
+          {4, :three_of_a_kind, hand.values |> sort_values |> List.last() |> hand_value}
 
         two_pair ->
-          {3, :two_pair}
+          {3, :two_pair, pairs |> hand_value}
 
         one_pair ->
-          {2, :one_pair}
+          {2, :one_pair, pairs |> hand_value}
 
         true ->
-          {1, :high_card}
+          {1, :high_card, (hand.cards |> List.last()).value}
       end
 
-    %{hand | hand: type, rank: rank}
+    %{hand | hand: type, rank: rank, hand_value: hand_value}
   end
 
   @spec convert(String.t()) :: __MODULE__.t()
@@ -113,4 +114,11 @@ defmodule Poker.Hand do
 
   defp royal_flush?(true, %{cards: cards}),
     do: List.first(cards).value == 10 && List.last(cards).value == 14
+
+  defp hand_value(cards) do
+    cards
+    |> List.flatten()
+    |> Enum.map(& &1.value)
+    |> Enum.sum()
+  end
 end

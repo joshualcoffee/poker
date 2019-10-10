@@ -17,54 +17,8 @@ defmodule Poker.Game do
         :player_2
 
       true ->
-        tie_breaker(player_1_hand, player_2_hand)
-    end
-  end
-
-  defp tie_breaker(%{hand: :high_card, cards: player_1_cards}, %{
-         cards: player_2_cards
-       }),
-       do: high_card_tie_breaker(player_1_cards, player_2_cards)
-
-  defp tie_breaker(%{hand: hand} = player_1_hand, player_2_hand)
-       when hand in [:one_pair] do
-    cond do
-      player_1_hand
-      |> pair_sum > player_2_hand |> pair_sum ->
-        :player_1
-
-      player_1_hand
-      |> pair_sum < player_2_hand |> pair_sum ->
-        :player_2
-
-      true ->
-        high_card_tie_breaker(player_1_hand.cards, player_2_hand.cards)
-    end
-
-    if player_1_hand
-       |> pair_sum > player_2_hand |> pair_sum do
-      :player_1
-    else
-      :player_2
-    end
-  end
-
-  @spec pair_sum(Hand.t()) :: Integer.t()
-  defp pair_sum(hand) do
-    hand.values
-    |> Map.values()
-    |> Enum.filter(fn val -> length(val) == 2 end)
-    |> List.flatten()
-    |> Enum.map(& &1.value)
-    |> Enum.sum()
-  end
-
-  @spec high_card_tie_breaker(List.t(Card.t()), List.t(Card.t())) :: atom()
-  defp high_card_tie_breaker(player_1_cards, player_2_cards) do
-    if (player_1_cards |> List.last()).value > (player_2_cards |> List.last()).value do
-      :player_1
-    else
-      :player_2
+        nil
+        # tie_breaker(player_1_hand, player_2_hand)
     end
   end
 end

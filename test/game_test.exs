@@ -1,4 +1,4 @@
-defmodule Poker.Game do
+defmodule Poker.GameTest do
   use ExUnit.Case
   alias Poker.Game
 

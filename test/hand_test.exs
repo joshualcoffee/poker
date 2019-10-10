@@ -38,5 +38,9 @@ defmodule Poker.CardTest do
     test "for four of a kind" do
       assert :four_of_a_kind == Hand.play("9S 9C 9D 9H 3H")
     end
+
+    test "for straight flush" do
+      assert :straight_flush == Hand.play("2H 3H 4H 5H 6H")
+    end
   end
 end

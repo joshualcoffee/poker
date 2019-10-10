@@ -34,5 +34,9 @@ defmodule Poker.CardTest do
     test "for flull house" do
       assert :full_house == Hand.play("9S 9C 9D 3H 3D")
     end
+
+    test "for four of a kind" do
+      assert :four_of_a_kind == Hand.play("9S 9C 9D 9H 3H")
+    end
   end
 end

@@ -12,7 +12,7 @@ defmodule Poker.CardTest do
     end
 
     test "for two pair" do
-      :one_pair = Hand.play("4H 4D 6C 6H 3D")
+      :two_pair = Hand.play("4H 4D 6C 6H 3D")
     end
   end
 end

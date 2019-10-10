@@ -10,12 +10,15 @@ defmodule Poker.Hand do
   @spec play(String.t()) :: atom()
   def play(cards) do
     hand = convert(cards)
+    pairs = pairs(hand)
+    one_pair = length(pairs) == 1
+    two_pair = length(pairs) == 2
 
     cond do
-      two_pair?(hand) ->
+      two_pair ->
         :two_pair
 
-      one_pair?(hand) ->
+      one_pair ->
         :one_pair
 
       true ->
@@ -34,17 +37,10 @@ defmodule Poker.Hand do
     %__MODULE__{values: values, cards: cards}
   end
 
-  @spec one_pair?(__MODULE__.t()) :: boolean()
-  defp one_pair?(hand) do
+  @spec pairs(__MODULE__.t()) :: List.t()
+  defp pairs(hand) do
     hand.values
     |> Map.values()
-    |> Enum.find(fn val -> length(val) == 2 end)
-  end
-
-  @spec two_pair?(__MODULE__.t()) :: boolean()
-  defp two_pair?(hand) do
-    hand.values
-    |> Map.values()
-    |> Enum.filter(fn val -> length(val) == 2 end) == 2
+    |> Enum.filter(fn val -> length(val) == 2 end)
   end
 end

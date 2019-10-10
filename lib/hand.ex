@@ -1,11 +1,13 @@
 defmodule Poker.Hand do
   alias Poker.Card
-  defstruct cards: [], suits: %{}, values: %{}
+  defstruct cards: [], suits: %{}, values: %{}, rank: 0, hand: nil
 
   @type t :: %__MODULE__{
           cards: List.t(Card.t()),
           values: map(),
-          suits: map()
+          suits: map(),
+          rank: Integer.t(),
+          hand: String.t() | nil
         }
   @spec play(String.t()) :: atom()
   def play(cards) do
@@ -49,7 +51,7 @@ defmodule Poker.Hand do
           {1, :high_card}
       end
 
-    %{hand: type, cards: hand.cards, rank: rank}
+    %{hand | hand: type, rank: rank}
   end
 
   @spec convert(String.t()) :: __MODULE__.t()

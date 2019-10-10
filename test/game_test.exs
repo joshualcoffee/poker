@@ -6,9 +6,13 @@ defmodule Poker.GameTest do
     assert player == winner
   end
 
-  describe "Poker.Game.play_round" do
+  describe "winning Poker.Game.play_round" do
     test "when player 1 wins" do
       assert_winner(:player_1, Game.play_round("4H 6C TH TD QH", "4H 6C 7H 3D QH"))
+    end
+
+    test "when player 2 wins" do
+      assert_winner(:player_2, Game.play_round("4H 6C TH TD QH", "4H 6C QH QD QH"))
     end
   end
 end

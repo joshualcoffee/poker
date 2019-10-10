@@ -12,6 +12,9 @@ defmodule Poker.Game do
       player_1_hand.rank > player_2_hand.rank ->
         :player_1
 
+      player_1_hand.rank < player_2_hand.rank ->
+        :player_2
+
       true ->
         :no_winner
     end

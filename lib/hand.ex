@@ -10,7 +10,7 @@ defmodule Poker.Hand do
           hand_value: Integer.t(),
           hand: String.t() | nil
         }
-  @spec play(String.t()) :: atom()
+  @spec play(String.t()) :: __MODULE__.t()
   def play(cards) do
     hand = convert(cards)
     pairs = pairs(hand)

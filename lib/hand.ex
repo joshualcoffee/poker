@@ -15,6 +15,9 @@ defmodule Poker.Hand do
     two_pair = length(pairs) == 2
 
     cond do
+      flush?(hand) ->
+        :flush
+
       straight?(hand) ->
         :straight
 
@@ -41,7 +44,8 @@ defmodule Poker.Hand do
       |> Enum.sort(&(&1.value <= &2.value))
 
     values = cards |> Enum.group_by(& &1.value)
-    %__MODULE__{values: values, cards: cards}
+    suits = cards |> Enum.group_by(& &1.suit)
+    %__MODULE__{values: values, cards: cards, suits: suits}
   end
 
   @spec pairs(__MODULE__.t()) :: List.t()
@@ -62,5 +66,12 @@ defmodule Poker.Hand do
     first_card = List.first(hand.cards)
     last_card = List.last(hand.cards)
     first_card.value..last_card.value |> Enum.to_list() == hand.cards |> Enum.map(& &1.value)
+  end
+
+  @spec flush?(__MODULE__.t()) :: boolean()
+  defp flush?(hand) do
+    suits = hand.suits |> Map.values()
+    suit = List.first(suits)
+    length(suits) == 1 && length(suit) == 5
   end
 end

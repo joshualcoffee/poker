@@ -30,5 +30,9 @@ defmodule Poker.CardTest do
     test "for flush" do
       assert :flush == Hand.play("2H 3H 6H 9H TH")
     end
+
+    test "for flull house" do
+      assert :full_house == Hand.play("9S 9C 9D 3H 3D")
+    end
   end
 end

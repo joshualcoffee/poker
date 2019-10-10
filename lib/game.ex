@@ -21,6 +21,7 @@ defmodule Poker.Game do
     end
   end
 
+  @spec tie_breaker(Hand.t(), Hand.t()) :: atom()
   defp tie_breaker(%{hand_value: p1_hand_value, cards: p1_cards}, %{
          hand_value: p2_hand_value,
          cards: p2_cards
@@ -39,6 +40,7 @@ defmodule Poker.Game do
     end
   end
 
+  @spec high_card_tie_breaker(List.t(Card.t()), List.t(Card.t())) :: atom()
   defp high_card_tie_breaker([p1_card | p1_cards], [p2_card | p2_cards]) do
     cond do
       p1_card.value > p2_card.value ->

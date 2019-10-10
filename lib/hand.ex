@@ -12,6 +12,9 @@ defmodule Poker.Hand do
     hand = convert(cards)
 
     cond do
+      two_pair?(hand) ->
+        :two_pair
+
       one_pair?(hand) ->
         :one_pair
 
@@ -36,5 +39,12 @@ defmodule Poker.Hand do
     hand.values
     |> Map.values()
     |> Enum.find(fn val -> length(val) == 2 end)
+  end
+
+  @spec two_pair?(__MODULE__.t()) :: boolean()
+  defp two_pair?(hand) do
+    hand.values
+    |> Map.values()
+    |> Enum.filter(fn val -> length(val) == 2 end) == 2
   end
 end

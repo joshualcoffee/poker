@@ -14,5 +14,9 @@ defmodule Poker.CardTest do
     test "for two pair" do
       :two_pair = Hand.play("4H 4D 6C 6H 3D")
     end
+
+    test "for three of a kind" do
+      :three_of_a_kind = Hand.play("4H 4D 4C 6H 3D")
+    end
   end
 end

@@ -34,5 +34,9 @@ defmodule Poker.GameTest do
     test "when players tie and player 2 has the higer pair" do
       assert_winner(:player_2, Game.play_round("9H 6C 9H TD KH", "TH TC 7H 8D QH"))
     end
+
+    test "when players tie and cards match" do
+      assert_winner(:player_2, Game.play_round("9H 6C 9H TD 8H", "9H 9C 7H 8D QH"))
+    end
   end
 end

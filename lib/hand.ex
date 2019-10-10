@@ -13,20 +13,23 @@ defmodule Poker.Hand do
     pairs = pairs(hand)
     one_pair = length(pairs) == 1
     two_pair = length(pairs) == 2
+    flush = flush?(hand)
+    straight = straight?(hand)
 
     cond do
-      straight_flush?(hand) ->
+      straight && flush ->
         :straight_flush
+
       four_of_a_kind?(hand) ->
         :four_of_a_kind
 
       full_house?(hand) ->
         :full_house
 
-      flush?(hand) ->
+      flush ->
         :flush
 
-      straight?(hand) ->
+      straight ->
         :straight
 
       three_of_a_kind?(hand) ->
@@ -84,11 +87,6 @@ defmodule Poker.Hand do
     suits = hand.suits |> Map.values()
     suit = List.first(suits)
     length(suits) == 1 && length(suit) == 5
-  end
-
-  @spec flush?(__MODULE__.t()) :: boolean()
-  defp straight_flush?(hand) do 
-    hand |> flush? && hand |> straight?
   end
 
   @spec sort_values(List.t()) :: List.t()

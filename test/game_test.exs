@@ -15,4 +15,10 @@ defmodule Poker.GameTest do
       assert_winner(:player_2, Game.play_round("4H 6C TH TD QH", "4H 6C QH QD QH"))
     end
   end
+
+  describe "tieing Poker.Game.play_round" do
+    test "when players tie" do
+      assert_winner(:no_winner, Game.play_round("4H 6C TH TD QH", "4H 6C 9H 9D QH"))
+    end
+  end
 end

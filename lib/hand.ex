@@ -15,6 +15,9 @@ defmodule Poker.Hand do
     two_pair = length(pairs) == 2
 
     cond do
+      straight?(hand) ->
+        :straight
+
       three_of_a_kind?(hand) ->
         :three_of_a_kind
 
@@ -35,6 +38,7 @@ defmodule Poker.Hand do
       cards
       |> String.split(" ")
       |> Enum.map(&Card.convert(&1))
+      |> Enum.sort(&(&1.value <= &2.value))
 
     values = cards |> Enum.group_by(& &1.value)
     %__MODULE__{values: values, cards: cards}
@@ -51,5 +55,12 @@ defmodule Poker.Hand do
   defp three_of_a_kind?(hand) do
     values = hand.values |> Map.values() |> Enum.sort(&(length(&1) <= length(&2)))
     length(values |> List.last()) == 3
+  end
+
+  @spec straight?(__MODULE__.t()) :: boolean()
+  defp straight?(hand) do
+    first_card = List.first(hand.cards)
+    last_card = List.last(hand.cards)
+    first_card.value..last_card.value |> Enum.to_list() == hand.cards |> Enum.map(& &1.value)
   end
 end

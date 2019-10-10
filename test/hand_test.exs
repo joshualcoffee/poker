@@ -42,5 +42,9 @@ defmodule Poker.CardTest do
     test "for straight flush" do
       assert :straight_flush == Hand.play("2H 3H 4H 5H 6H")
     end
+
+    test "for royal flush" do
+      assert :royal_flush == Hand.play("TH JH QH KH AH")
+    end
   end
 end

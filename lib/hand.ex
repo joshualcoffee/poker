@@ -17,6 +17,9 @@ defmodule Poker.Hand do
     straight = straight?(hand)
 
     cond do
+      royal_flush?(straight && flush, hand) ->
+        :royal_flush
+
       straight && flush ->
         :straight_flush
 
@@ -99,4 +102,10 @@ defmodule Poker.Hand do
   defp n_of_kind?(hand, n) do
     length(hand.values |> sort_values |> List.last()) == n
   end
+
+  @spec royal_flush?(boolean(), __MODULE__.t()) :: boolean()
+  defp royal_flush?(false, _), do: false
+
+  defp royal_flush?(true, %{cards: cards}),
+    do: List.first(cards).value == 10 && List.last(cards).value == 14
 end

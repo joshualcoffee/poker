@@ -15,6 +15,9 @@ defmodule Poker.Hand do
     two_pair = length(pairs) == 2
 
     cond do
+      four_of_a_kind?(hand) ->
+        :four_of_a_kind
+
       full_house?(hand) ->
         :full_house
 
@@ -61,14 +64,11 @@ defmodule Poker.Hand do
   @spec full_house?(__MODULE__.t()) :: boolean()
   defp full_house?(hand) do
     values = hand.values |> sort_values
-    length(values |> List.first()) == 2 && length(values |> List.last()) == 3
+    length(values |> List.first()) == 2 && three_of_a_kind?(hand)
   end
 
   @spec three_of_a_kind?(__MODULE__.t()) :: boolean()
-  defp three_of_a_kind?(hand) do
-    values = hand.values |> sort_values
-    length(values |> List.last()) == 3
-  end
+  defp three_of_a_kind?(hand), do: n_of_kind?(hand, 3)
 
   @spec straight?(__MODULE__.t()) :: boolean()
   defp straight?(hand) do
@@ -86,4 +86,12 @@ defmodule Poker.Hand do
 
   @spec sort_values(List.t()) :: List.t()
   defp sort_values(values), do: values |> Map.values() |> Enum.sort(&(length(&1) <= length(&2)))
+
+  @spec four_of_a_kind?(__MODULE__.t()) :: boolean()
+  defp four_of_a_kind?(hand), do: n_of_kind?(hand, 4)
+
+  @spec n_of_kind?(__MODULE__.t(), Integer.t()) :: boolean()
+  defp n_of_kind?(hand, n) do
+    length(hand.values |> sort_values |> List.last()) == n
+  end
 end

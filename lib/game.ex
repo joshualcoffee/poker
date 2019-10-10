@@ -31,13 +31,17 @@ defmodule Poker.Game do
     end
   end
 
-  defp tie_breaker(player_1_hand, player_2_hand)
-       when player_1_hand.hand in [:one_pair] do
-    hand
-    |> pair_sum
+  defp tie_breaker(%{hand: hand} = player_1_hand, player_2_hand)
+       when hand in [:one_pair] do
+    if player_1_hand
+       |> pair_sum > player_2_hand |> pair_sum do
+      :player_1
+    else
+      :player_2
+    end
   end
 
-  @spec pairs(__MODULE__.t()) :: List.t()
+  @spec pair_sum(Hand.t()) :: Integer.t()
   defp pair_sum(hand) do
     hand.values
     |> Map.values()

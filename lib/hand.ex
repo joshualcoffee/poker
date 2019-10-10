@@ -16,37 +16,40 @@ defmodule Poker.Hand do
     flush = flush?(hand)
     straight = straight?(hand)
 
-    cond do
-      royal_flush?(straight && flush, hand) ->
-        :royal_flush
+    {rank, type} =
+      cond do
+        royal_flush?(straight && flush, hand) ->
+          {10, :royal_flush}
 
-      straight && flush ->
-        :straight_flush
+        straight && flush ->
+          {9, :straight_flush}
 
-      four_of_a_kind?(hand) ->
-        :four_of_a_kind
+        four_of_a_kind?(hand) ->
+          {8, :four_of_a_kind}
 
-      full_house?(hand) ->
-        :full_house
+        full_house?(hand) ->
+          {7, :full_house}
 
-      flush ->
-        :flush
+        flush ->
+          {6, :flush}
 
-      straight ->
-        :straight
+        straight ->
+          {5, :straight}
 
-      three_of_a_kind?(hand) ->
-        :three_of_a_kind
+        three_of_a_kind?(hand) ->
+          {4, :three_of_a_kind}
 
-      two_pair ->
-        :two_pair
+        two_pair ->
+          {3, :two_pair}
 
-      one_pair ->
-        :one_pair
+        one_pair ->
+          {2, :one_pair}
 
-      true ->
-        :high_card
-    end
+        true ->
+          {1, :high_card}
+      end
+
+    %{hand: type, cards: hand.cards, rank: rank}
   end
 
   @spec convert(String.t()) :: __MODULE__.t()
